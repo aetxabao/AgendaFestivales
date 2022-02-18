@@ -18,7 +18,7 @@ import java.util.TreeMap;
  * Solo aparecen los meses que incluyen algún festival
  *
  * Las claves se recuperan en orden alfabéico
- *
+ * @autor Evelin Virunurm
  */
 public class AgendaFestivales {
     private TreeMap<Mes, ArrayList<Festival>> agenda;
