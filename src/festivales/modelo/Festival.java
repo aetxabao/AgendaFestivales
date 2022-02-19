@@ -1,8 +1,8 @@
+package festivales.modelo;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
-import java.util.Locale;
 
 /**
  * Un objeto de esta clase almacena los datos de un
@@ -121,31 +121,31 @@ public class Festival {
     }
 
     /**
-     * Código para probar la clase Festival
+     * Código para probar la clase festivales.modelo.Festival
      *
      */
     public static void main(String[] args) {
-        System.out.println("Probando clase Festival");
+        System.out.println("Probando clase festivales.modelo.Festival");
         String datosFestival = "Gazpatxo Rock : " +
                 "valencia: 28-02-2022  :1  :rock" +
                 ":punk " +
                 ": hiphop ";
-        Festival f1 = FestivalesIO.parsearLinea(datosFestival);
+        Festival f1 = festivales.io.FestivalesIO.parsearLinea(datosFestival);
         System.out.println(f1);
 
         datosFestival = "black sound fest:badajoz:05-02-2022:  21" +
                 ":rock" + ":  blues";
-        Festival f2 = FestivalesIO.parsearLinea(datosFestival);
+        Festival f2 = festivales.io.FestivalesIO.parsearLinea(datosFestival);
         System.out.println(f2);
 
         datosFestival = "guitar bcn:barcelona: 28-01-2022 :  170" +
                 ":indie" + ":pop:fusion";
-        Festival f3 = FestivalesIO.parsearLinea(datosFestival);
+        Festival f3 = festivales.io.FestivalesIO.parsearLinea(datosFestival);
         System.out.println(f3);
 
         datosFestival = "  benidorm fest:benidorm:26-01-2022:3" +
                 ":indie" + ": pop  :rock";
-        Festival f4 = FestivalesIO.parsearLinea(datosFestival);
+        Festival f4 = festivales.io.FestivalesIO.parsearLinea(datosFestival);
         System.out.println(f4);
 
 
