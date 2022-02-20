@@ -1,5 +1,6 @@
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.HashSet;
 
 /**
@@ -119,9 +120,32 @@ public class Festival {
      */
     @Override
     public String toString() {
-       //TODO
-        
-        return null;
+       //DONE
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("%-32s",nombre)).append(estilos.toString());
+        sb.append("\n").append(lugar).append("\n");
+        int dia = fechaInicio.getDayOfMonth();
+        if (dia < 10) {
+            sb.append(0);
+        }
+        sb.append(dia).append(" ");
+        String mes = getMes().toString().toLowerCase().substring(0, 3).concat(".");
+        sb.append(mes);
+        if (duracion != 1) {
+            sb.append(" - ").append(fechaInicio.plusDays(duracion).getDayOfMonth()).append(" ");
+            sb.append(getMes().toString().toLowerCase().substring(0, 3).concat("."));
+        }
+        sb.append(" ").append(fechaInicio.getYear());
+        if (haConcluido()) {
+            sb.append(" (concluido)");
+        } else if (fechaInicio.isAfter(LocalDate.now())) {
+            Period cuanto = LocalDate.now().until(fechaInicio);
+            sb.append(" (quedan ").append(cuanto.getDays()).append(" días)");
+        } else {
+            sb.append(" (ON)");
+        }
+        sb.append("\n----------------------------------------------------");
+        return sb.toString();
         
     }
 
