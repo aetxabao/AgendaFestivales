@@ -10,7 +10,8 @@ import java.util.HashSet;
  * se engloba en un conjunto determinado de estilos
  *
  */
-public class Festival {
+public class Festival
+{
     private final String nombre;
     private final String lugar;
     private final LocalDate fechaInicio;
@@ -19,7 +20,8 @@ public class Festival {
     
     
     public Festival(String nombre, String lugar, LocalDate fechaInicio,
-                    int duracion, HashSet<Estilo> estilos) {
+                    int duracion, HashSet<Estilo> estilos)
+    {
         this.nombre = nombre;
         this.lugar = lugar;
         this.fechaInicio = fechaInicio;
