@@ -1,5 +1,7 @@
+package festivales.modelo;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 
 /**
@@ -8,7 +10,7 @@ import java.util.HashSet;
  * Todo festival tiene un nombre, se celebra en un lugar
  * en una determinada fecha, dura una serie de días y
  * se engloba en un conjunto determinado de estilos
- *
+ * @autor Evelin Virunurm
  */
 public class Festival {
     private final String nombre;
@@ -16,8 +18,8 @@ public class Festival {
     private final LocalDate fechaInicio;
     private final int duracion;
     private final HashSet<Estilo> estilos;
-    
-    
+
+
     public Festival(String nombre, String lugar, LocalDate fechaInicio,
                     int duracion, HashSet<Estilo> estilos) {
         this.nombre = nombre;
@@ -25,32 +27,31 @@ public class Festival {
         this.fechaInicio = fechaInicio;
         this.duracion = duracion;
         this.estilos = estilos;
-        
+
     }
-    
+
     public String getNombre() {
         return nombre;
     }
-    
+
     public String getLugar() {
         return lugar;
     }
-    
+
     public LocalDate getFechaInicio() {
         return fechaInicio;
     }
-    
+
     public int getDuracion() {
         return duracion;
     }
-    
+
     public HashSet<Estilo> getEstilos() {
         return estilos;
     }
-    
+
     public void addEstilo(Estilo estilo) {
         this.estilos.add(estilo);
-        
     }
 
     /**
@@ -59,10 +60,7 @@ public class Festival {
      *
      */
     public Mes getMes() {
-        //TODO
-        
-        return null;
-        
+        return Mes.values()[this.fechaInicio.getMonthValue() - 1];
     }
 
     /**
@@ -72,10 +70,7 @@ public class Festival {
      * en un fecha anterior a otro
      */
     public boolean empiezaAntesQue(Festival otro) {
-        //TODO
-        
-        return true;
-        
+        return this.fechaInicio.isBefore(otro.getFechaInicio());
     }
 
     /**
@@ -85,10 +80,7 @@ public class Festival {
      * en un fecha posteior a otro
      */
     public boolean empiezaDespuesQue(Festival otro) {
-        //TODO
-        
-        return true;
-        
+        return this.fechaInicio.isAfter(otro.getFechaInicio());
     }
 
     /**
@@ -96,10 +88,7 @@ public class Festival {
      * @return true si el festival ya ha concluido
      */
     public boolean haConcluido() {
-        //TODO
-        
-        return true;
-
+        return this.fechaInicio.isBefore(LocalDate.now()) && this.fechaInicio.plusDays(this.duracion).isBefore(LocalDate.now());
     }
 
     /**
@@ -110,40 +99,56 @@ public class Festival {
     @Override
     public String toString() {
        //TODO
-        
-        return null;
-        
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.nombre).append(String.format("%30s\n", estilos)).append(this.lugar).append("\n");
+        sb.append(this.fechaInicio.getDayOfMonth()).append(" ").append(this.getMes().toString().toLowerCase().substring(0, 3)).append(". ");
+        if (this.duracion != 1) {
+            Mes finalMonth = Mes.values()[this.fechaInicio.plusDays(this.duracion).getMonthValue() - 1];
+            sb.append("- ").append(this.fechaInicio.plusDays(this.duracion).getDayOfMonth()).append(" ").append(finalMonth.toString().toLowerCase().substring(0, 3)).append(". ");
+        }
+        sb.append(this.fechaInicio.getYear());
+
+        if (this.fechaInicio.isAfter(LocalDate.now())) {
+            sb.append(" (quedan ").append(ChronoUnit.DAYS.between(LocalDate.now(), fechaInicio)).append(" días)\n");
+        } else if (this.haConcluido()) {
+            sb.append(" (concluido)\n");
+        } else {
+            sb.append(" (ON)\n");
+        }
+        sb.append("------------------------------------------------------------");
+
+        return sb.toString();
     }
 
     /**
-     * Código para probar la clase Festival
+     * Código para probar la clase festivales.modelo.Festival
      *
      */
     public static void main(String[] args) {
-        System.out.println("Probando clase Festival");
+        System.out.println("Probando clase festivales.modelo.Festival");
         String datosFestival = "Gazpatxo Rock : " +
                 "valencia: 28-02-2022  :1  :rock" +
                 ":punk " +
                 ": hiphop ";
-        Festival f1 = FestivalesIO.parsearLinea(datosFestival);
+        Festival f1 = festivales.io.FestivalesIO.parsearLinea(datosFestival);
         System.out.println(f1);
-        
+
         datosFestival = "black sound fest:badajoz:05-02-2022:  21" +
                 ":rock" + ":  blues";
-        Festival f2 = FestivalesIO.parsearLinea(datosFestival);
+        Festival f2 = festivales.io.FestivalesIO.parsearLinea(datosFestival);
         System.out.println(f2);
-    
+
         datosFestival = "guitar bcn:barcelona: 28-01-2022 :  170" +
                 ":indie" + ":pop:fusion";
-        Festival f3 = FestivalesIO.parsearLinea(datosFestival);
+        Festival f3 = festivales.io.FestivalesIO.parsearLinea(datosFestival);
         System.out.println(f3);
-    
+
         datosFestival = "  benidorm fest:benidorm:26-01-2022:3" +
                 ":indie" + ": pop  :rock";
-        Festival f4 = FestivalesIO.parsearLinea(datosFestival);
+        Festival f4 = festivales.io.FestivalesIO.parsearLinea(datosFestival);
         System.out.println(f4);
-      
-        
+
+
         System.out.println("\nProbando empiezaAntesQue() empiezaDespuesQue()" +
                 "\n");
         if (f1.empiezaAntesQue(f2)) {
@@ -159,8 +164,8 @@ public class Festival {
         System.out.println(f4.getNombre() + " ha concluido? " + f4.haConcluido());
         System.out.println(f1);
         System.out.println(f1.getNombre() + " ha concluido? " + f1.haConcluido());
- 
-        
-        
+
+
+
     }
 }
