@@ -47,7 +47,7 @@ public class FestivalesIO {
         String[] dividido = lineaFestival.split(":");
         String nombre = sacarNombre(lineaFestival);
         String lugar = dividido[1].toUpperCase();
-        DateTimeFormatter formateador = DateTimeFormatter.ofPattern("dd MM yyyy");
+        DateTimeFormatter formateador = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDate tiempo = LocalDate.parse(dividido[2], formateador);
         int duracion = Integer.valueOf(dividido[3]);
         HashSet<Estilo> estilos = sacarEstilos(lineaFestival);
