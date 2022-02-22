@@ -9,6 +9,8 @@ public class TestAgendaFestivales {
     /**
      * Código para probar la clase AgendaFestivales
      *
+     * @Autor Juan Garbayo
+     *
      */
     public static void main(String[] args) {
         AgendaFestivales agenda = new AgendaFestivales();
