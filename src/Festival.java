@@ -61,10 +61,23 @@ public class Festival {
      *
      */
     public Mes getMes() {
-        //TODO
-        
-        return null;
-        
+        //DONE
+        Mes mes = null;
+        switch (fechaInicio.getMonth()){
+            case JANUARY -> mes = Mes.ENERO;
+            case FEBRUARY -> mes = Mes.FEBRERO;
+            case MARCH -> mes = Mes.MARZO;
+            case APRIL -> mes = Mes.ABRIL;
+            case MAY -> mes = Mes.MAYO;
+            case JUNE -> mes = Mes.JUNIO;
+            case JULY -> mes = Mes.JULIO;
+            case AUGUST -> mes = Mes.AGOSTO;
+            case SEPTEMBER -> mes = Mes.SEPTIEMBRE;
+            case OCTOBER -> mes = Mes.OCTUBRE;
+            case NOVEMBER -> mes = Mes.NOVIEMBRE;
+            case DECEMBER -> mes = Mes.DICIEMBRE;
+        }
+        return mes;
     }
 
     /**
@@ -74,10 +87,8 @@ public class Festival {
      * en un fecha anterior a otro
      */
     public boolean empiezaAntesQue(Festival otro) {
-        //TODO
-        
-        return true;
-        
+        //DONE
+        return fechaInicio.isBefore(otro.fechaInicio);
     }
 
     /**
@@ -87,10 +98,8 @@ public class Festival {
      * en un fecha posteior a otro
      */
     public boolean empiezaDespuesQue(Festival otro) {
-        //TODO
-        
-        return true;
-        
+        //DONE
+        return fechaInicio.isAfter(otro.fechaInicio);
     }
 
     /**
@@ -98,10 +107,8 @@ public class Festival {
      * @return true si el festival ya ha concluido
      */
     public boolean haConcluido() {
-        //TODO
-        
-        return true;
-
+        //DONE
+        return fechaInicio.isBefore(LocalDate.now());
     }
 
     /**
@@ -112,8 +119,14 @@ public class Festival {
     @Override
     public String toString() {
        //TODO
+        StringBuilder sb = new StringBuilder();
+        sb.append(nombre).append("\t\t\t").append(estilos.toString()).append("\n").
+                append(lugar).append("\n").
+                append(fechaInicio).append("\n").
+                append("------------------------------------------------------------");
+
         
-        return null;
+        return sb.toString();
         
     }
 
