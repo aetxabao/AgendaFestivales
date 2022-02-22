@@ -1,6 +1,7 @@
 
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Locale;
@@ -40,45 +41,48 @@ public class FestivalesIO
      */
     public static Festival parsearLinea(String lineaFestival)
     {
-       //TODO
         String nombre;
         String lugar;
-        LocalDate fechaInicio = LocalDate.now();
+        LocalDate fechaInicio;
         int duracion = 0;
         HashSet<Estilo> estilos = new HashSet<>();
 
         // Divido la linea de entrada separando por ':'
         String[] partes = lineaFestival.split(":");
+
         // Metodos privados:
         nombre = parsearNombre(partes[0]);
         lugar = parsearLugar(partes[1]);
         fechaInicio = parsearFecha(partes[2]);
-
+        duracion = parsearDuracion(partes[3]);
+        estilos = parsearEstilos(Arrays.copyOfRange(partes, 4, partes.length));
 
         return new Festival(nombre,lugar,fechaInicio,duracion,estilos);
     }
 
+    //==============================================================================
+
     private static String parsearNombre(String lineaNombre)
     {
         String salida = "";
+
         // Elimino los posibles espacios iniciales y finales
         lineaNombre.trim();
         // Divido en array todas las posibles cadenas por " ".
         String[] partesNombre = lineaNombre.split(" ");
 
-        // Para cada cadena, hago
+        // Para cada cadena,
         for (String parte : partesNombre)
         {
-            // si una parte 'festivales.modelo.Festival', lo borra
-            if(parte.equalsIgnoreCase("festivales.modelo.Festival"))
+            // y siempre que no sea nula
+            if(parte.length() != 0)
             {
-                parte = "";
-            }
-            // si no, la capitalizo y añado a 'salida'
-            else
-            {
-                parte = parte.substring(0,1).toUpperCase() + parte.substring(1);
-                salida += parte + " ";
+                // si esa parte no es 'festivales.modelo.Festival', la capitalizo
+                if ( ! parte.equalsIgnoreCase("festivales.modelo.Festival"))
+                {
+                    parte = parte.substring(0, 1).toUpperCase() + parte.substring(1);
+                    salida += parte + " ";
+                }
             }
         }
 
@@ -88,12 +92,35 @@ public class FestivalesIO
 
     private static String parsearLugar(String lineaLugar)
     {
+        return lineaLugar.trim().toUpperCase();
+    }
 
+    private static LocalDate parsearFecha(String lineaFecha)//  26-03-2021
+    {
+        lineaFecha = lineaFecha.trim();
+        return LocalDate.parse(lineaFecha, DateTimeFormatter.ofPattern("dd-MM-yyy"));
+    }
+
+    private static int parsearDuracion(String lineaDuracion)
+    {
+        return Integer.valueOf(lineaDuracion.trim());
+    }
+
+    private static HashSet<Estilo> parsearEstilos(String[] arrayEstilos)// rock: punk:hiphop
+    {
+        HashSet<Estilo> estilos = new HashSet<>();
+
+        for (String s : arrayEstilos)
+        {
+            estilos.add(Estilo.valueOf(s.trim().toUpperCase()));
+        }
+
+        return estilos;
     }
 
     public static void main(String[] args)
     {
-        String salida = FestivalesIO.parsearNombre("festivales.modelo.Festival blues de asturias");
-        System.out.println(salida);
+        Festival unFestival = FestivalesIO.parsearLinea("Pueblos blancos Music festivales.modelo.Festival:  ronda:28-07-2022: 4: blues: rock");
+        System.out.println(unFestival.toString());
     }
 }
