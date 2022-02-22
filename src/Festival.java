@@ -10,6 +10,7 @@ import java.util.HashSet;
  * en una determinada fecha, dura una serie de días y
  * se engloba en un conjunto determinado de estilos
  *
+ * @author Sergio Cobos Lorca
  */
 public class Festival {
     private final String nombre;
@@ -51,7 +52,6 @@ public class Festival {
     
     public void addEstilo(Estilo estilo) {
         this.estilos.add(estilo);
-        
     }
 
     /**
@@ -61,22 +61,7 @@ public class Festival {
      */
     public Mes getMes() {
         //DONE
-        switch (fechaInicio.getMonthValue()) {
-            case 1: return Mes.ENERO;
-            case 2: return Mes.FEBRERO;
-            case 3: return Mes.MARZO;
-            case 4: return Mes.ABRIL;
-            case 5: return Mes.MAYO;
-            case 6: return Mes.JUNIO;
-            case 7: return Mes.JULIO;
-            case 8: return Mes.AGOSTO;
-            case 9: return Mes.SEPTIEMBRE;
-            case 10: return Mes.OCTUBRE;
-            case 11: return Mes.NOVIEMBRE;
-            case 12: return Mes.DICIEMBRE;
-        }
-        return null;
-        
+        return Mes.values()[fechaInicio.getMonthValue() - 1];
     }
 
     /**
@@ -88,7 +73,6 @@ public class Festival {
     public boolean empiezaAntesQue(Festival otro) {
         //DONE
         return fechaInicio.isBefore(otro.getFechaInicio());
-        
     }
 
     /**
@@ -100,7 +84,6 @@ public class Festival {
     public boolean empiezaDespuesQue(Festival otro) {
         //DONE
         return fechaInicio.isAfter(otro.getFechaInicio());
-        
     }
 
     /**
@@ -110,7 +93,6 @@ public class Festival {
     public boolean haConcluido() {
         //DONE
         return fechaInicio.plusDays(duracion).isBefore(LocalDate.now());
-
     }
 
     /**
@@ -146,7 +128,6 @@ public class Festival {
         }
         sb.append("\n----------------------------------------------------");
         return sb.toString();
-        
     }
 
     /**
@@ -193,8 +174,5 @@ public class Festival {
         System.out.println(f4.getNombre() + " ha concluido? " + f4.haConcluido());
         System.out.println(f1);
         System.out.println(f1.getNombre() + " ha concluido? " + f1.haConcluido());
- 
-        
-        
     }
 }

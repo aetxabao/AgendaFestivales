@@ -50,6 +50,7 @@ public class FestivalesIO {
             palabrasNombre[i] = s.concat(palabrasNombre[i].substring(1));
             nombre = nombre.concat(palabrasNombre[i] + " ");
         }
+        nombre = nombre.substring(0, nombre.length() - 1);
         String lugar = datos[1].toUpperCase().trim();
         DateTimeFormatter formateador = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDate fecha = LocalDate.parse(datos[2].trim(), formateador);
@@ -57,38 +58,8 @@ public class FestivalesIO {
         HashSet<Estilo> estilos = new HashSet<>();
         for (int i = 4; i < datos.length; i++) {
             String estilo = datos[i].toUpperCase().trim();
-            switch (estilo) {
-                case "HIPHOP":
-                    estilos.add(Estilo.HIPHOP);
-                    break;
-                case "INDIE":
-                    estilos.add(Estilo.INDIE);
-                    break;
-                case "POP":
-                    estilos.add(Estilo.POP);
-                    break;
-                case "ROCK":
-                    estilos.add(Estilo.ROCK);
-                    break;
-                case "FUSION":
-                    estilos.add(Estilo.FUSION);
-                    break;
-                case "RAP":
-                    estilos.add(Estilo.RAP);
-                    break;
-                case "ELECTRONICA":
-                    estilos.add(Estilo.ELECTRONICA);
-                    break;
-                case "PUNK":
-                    estilos.add(Estilo.PUNK);
-                    break;
-                case "BLUES":
-                    estilos.add(Estilo.BLUES);
-                    break;
-            }
+            estilos.add(Estilo.valueOf(estilo));
         }
         return new Festival(nombre, lugar, fecha, duracion, estilos);
     }
-
-
 }
