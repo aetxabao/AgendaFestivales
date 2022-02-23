@@ -1,6 +1,7 @@
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Locale;
 
 /**
  * Un objeto de esta clase almacena los datos de un
@@ -10,7 +11,6 @@ import java.util.HashSet;
  * se engloba en un conjunto determinado de estilos
  *
  * @author Joan García Pedraza
- *
  */
 public class Festival {
     private final String nombre;
@@ -18,8 +18,8 @@ public class Festival {
     private final LocalDate fechaInicio;
     private final int duracion;
     private final HashSet<Estilo> estilos;
-    
-    
+
+
     public Festival(String nombre, String lugar, LocalDate fechaInicio,
                     int duracion, HashSet<Estilo> estilos) {
         this.nombre = nombre;
@@ -27,43 +27,42 @@ public class Festival {
         this.fechaInicio = fechaInicio;
         this.duracion = duracion;
         this.estilos = estilos;
-        
+
     }
-    
+
     public String getNombre() {
         return nombre;
     }
-    
+
     public String getLugar() {
         return lugar;
     }
-    
+
     public LocalDate getFechaInicio() {
         return fechaInicio;
     }
-    
+
     public int getDuracion() {
         return duracion;
     }
-    
+
     public HashSet<Estilo> getEstilos() {
         return estilos;
     }
-    
+
     public void addEstilo(Estilo estilo) {
         this.estilos.add(estilo);
-        
+
     }
 
     /**
      * devuelve el mes de celebración del festival, como
      * valor enumerado
-     *
      */
     public Mes getMes() {
         //DONE
         Mes mes = null;
-        switch (fechaInicio.getMonth()){
+        switch (fechaInicio.getMonth()) {
             case JANUARY -> mes = Mes.ENERO;
             case FEBRUARY -> mes = Mes.FEBRERO;
             case MARCH -> mes = Mes.MARZO;
@@ -81,7 +80,6 @@ public class Festival {
     }
 
     /**
-     *
      * @param otro
      * @return true si el festival actual empieza
      * en un fecha anterior a otro
@@ -92,7 +90,6 @@ public class Festival {
     }
 
     /**
-     *
      * @param otro
      * @return true si el festival actual empieza
      * en un fecha posteior a otro
@@ -103,7 +100,6 @@ public class Festival {
     }
 
     /**
-     *
      * @return true si el festival ya ha concluido
      */
     public boolean haConcluido() {
@@ -114,25 +110,45 @@ public class Festival {
     /**
      * Representación textual del festival, exactamente
      * como se indica en el enunciado
-     *
      */
     @Override
     public String toString() {
-       //TODO
+        //DONE
         StringBuilder sb = new StringBuilder();
-        sb.append(nombre).append("\t\t\t").append(estilos.toString()).append("\n").
-                append(lugar).append("\n").
-                append(fechaInicio).append("\n").
-                append("------------------------------------------------------------");
+        sb.append(nombre).append("\t\t\t\t\t").append(estilos.toString()).append("\n").
+                append(lugar).append("\n");
+        if (duracion <= 1) {
+            sb.append(fechaInicio.getDayOfMonth()).append(" ").
+                    append(fechaInicio.getMonth().toString().toLowerCase().substring(0, 3)).append(".").
+                    append(fechaInicio.getYear());
+        }
+        if (duracion > 1) {
+            sb.append(fechaInicio.getDayOfMonth()).append(" ").
+                    append(fechaInicio.getMonth().toString().toLowerCase().substring(0, 3)).append(".").append(" - ").append(fechaInicio.plusDays(duracion).getDayOfMonth()).append(" ").
+                    append(fechaInicio.plusDays(duracion).getMonth().toString().toLowerCase().substring(0, 3)).append(".").
+                    append(fechaInicio.plusDays(duracion).getYear());
+        }
+        if (fechaInicio.plusDays(duracion).isBefore(LocalDate.now())) {
+            sb.append("(concluido)");
+        }
+        if (LocalDate.now().isBefore(fechaInicio.plusDays(duracion)) && LocalDate.now().isAfter(fechaInicio)) {
+            sb.append("(ON)");
+        }
+        if (fechaInicio.isAfter(LocalDate.now())) {
+            sb.append(" (quedan ").append(fechaInicio.getDayOfMonth() - LocalDate.now().getDayOfMonth()).append(" dias)");
+        }
 
-        
+        sb.append("\n");
+
+        sb.append("------------------------------------------------------------");
+
+
         return sb.toString();
-        
+
     }
 
     /**
      * Código para probar la clase Festival
-     *
      */
     public static void main(String[] args) {
         System.out.println("Probando clase Festival");
@@ -142,23 +158,23 @@ public class Festival {
                 ": hiphop ";
         Festival f1 = FestivalesIO.parsearLinea(datosFestival);
         System.out.println(f1);
-        
+
         datosFestival = "black sound fest:badajoz:05-02-2022:  21" +
                 ":rock" + ":  blues";
         Festival f2 = FestivalesIO.parsearLinea(datosFestival);
         System.out.println(f2);
-    
+
         datosFestival = "guitar bcn:barcelona: 28-01-2022 :  170" +
                 ":indie" + ":pop:fusion";
         Festival f3 = FestivalesIO.parsearLinea(datosFestival);
         System.out.println(f3);
-    
+
         datosFestival = "  benidorm fest:benidorm:26-01-2022:3" +
                 ":indie" + ": pop  :rock";
         Festival f4 = FestivalesIO.parsearLinea(datosFestival);
         System.out.println(f4);
-      
-        
+
+
         System.out.println("\nProbando empiezaAntesQue() empiezaDespuesQue()" +
                 "\n");
         if (f1.empiezaAntesQue(f2)) {
@@ -174,8 +190,7 @@ public class Festival {
         System.out.println(f4.getNombre() + " ha concluido? " + f4.haConcluido());
         System.out.println(f1);
         System.out.println(f1.getNombre() + " ha concluido? " + f1.haConcluido());
- 
-        
-        
+
+
     }
 }

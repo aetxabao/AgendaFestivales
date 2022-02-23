@@ -60,7 +60,7 @@ public class FestivalesIO {
         for (int i = 0; i < s.length; i++) {
             String primera = s[i].substring(0, 1);
             String resto = s[i].substring(1,s[i].length());
-            p = primera + resto;
+            p = primera.toUpperCase() + resto;
         }
         return p;
     }
@@ -90,22 +90,22 @@ public class FestivalesIO {
             a[i] = a[i].trim();
             if(a[i].equalsIgnoreCase("hiphop")){
                 estilo = Estilo.HIPHOP;
-            } else if(a[i].equalsIgnoreCase("blues")){
-                estilo = Estilo.BLUES;
-            } else if(a[i].equalsIgnoreCase("fusion")) {
-                estilo = Estilo.FUSION;
-            }else if(a[i].equalsIgnoreCase("pop")){
-                estilo = Estilo.POP;
-            }else if(a[i].equalsIgnoreCase("electronica")){
-                estilo = Estilo.ELECTRONICA;
-            }else if(a[i].equalsIgnoreCase("indie")){
+            } else if(a[i].equalsIgnoreCase("indie")){
                 estilo = Estilo.INDIE;
-            }else if(a[i].equalsIgnoreCase("punk")){
-                estilo = Estilo.PUNK;
-            }else if(a[i].equalsIgnoreCase("rap")){
-                estilo = Estilo.RAP;
+            } else if(a[i].equalsIgnoreCase("pop")) {
+                estilo = Estilo.POP;
             }else if(a[i].equalsIgnoreCase("rock")){
                 estilo = Estilo.ROCK;
+            }else if(a[i].equalsIgnoreCase("fusion")){
+                estilo = Estilo.FUSION;
+            }else if(a[i].equalsIgnoreCase("rap")){
+                estilo = Estilo.RAP;
+            }else if(a[i].equalsIgnoreCase("electronica")){
+                estilo = Estilo.ELECTRONICA;
+            }else if(a[i].equalsIgnoreCase("punk")){
+                estilo = Estilo.PUNK;
+            }else if(a[i].equalsIgnoreCase("blues")){
+                estilo = Estilo.BLUES;
             }
             estilos.add(estilo);
         }
