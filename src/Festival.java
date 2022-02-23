@@ -2,6 +2,8 @@
 import java.time.LocalDate;
 import java.util.HashSet;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
 /**
  * Un objeto de esta clase almacena los datos de un
  * festival.
@@ -59,10 +61,9 @@ public class Festival {
      *
      */
     public Mes getMes() {
-        //TODO
-        
-        return null;
-        
+        int value = fechaInicio.getMonthValue();
+        Mes[] mes = Mes.values();
+        return mes[value-1];
     }
 
     /**
@@ -72,10 +73,8 @@ public class Festival {
      * en un fecha anterior a otro
      */
     public boolean empiezaAntesQue(Festival otro) {
-        //TODO
-        
-        return true;
-        
+
+        return this.fechaInicio.isBefore(otro.fechaInicio);
     }
 
     /**
@@ -85,10 +84,8 @@ public class Festival {
      * en un fecha posteior a otro
      */
     public boolean empiezaDespuesQue(Festival otro) {
-        //TODO
-        
-        return true;
-        
+
+        return this.fechaInicio.isAfter(otro.fechaInicio);
     }
 
     /**
@@ -96,10 +93,9 @@ public class Festival {
      * @return true si el festival ya ha concluido
      */
     public boolean haConcluido() {
-        //TODO
-        
-        return true;
-
+        LocalDate now = LocalDate.now();
+        LocalDate total = fechaInicio.plusDays(duracion);
+        return total.isBefore(now);
     }
 
     /**
@@ -109,9 +105,41 @@ public class Festival {
      */
     @Override
     public String toString() {
-       //TODO
-        
-        return null;
+       StringBuilder sb = new StringBuilder();
+       sb.append(nombre).append("\t").append("[");
+        for (Estilo estilo : estilos) {
+            sb.append(estilo.toString()).append(",");
+        }
+        sb.deleteCharAt(sb.lastIndexOf(","));
+        sb.append("]\n");
+        sb.append(lugar).append("\n");
+        int dia = fechaInicio.getDayOfMonth();
+        String mes = getMes().toString().toLowerCase().substring(0,3);
+        int mesFinal = fechaInicio.plusDays(duracion).getMonthValue();
+        Mes[] meses = Mes.values();
+        String mesSumado = meses[mesFinal-1].toString().toLowerCase().substring(0,3);
+
+
+        int ano = fechaInicio.getYear();
+        sb.append(dia).append(" ").append(mes).append(". ");
+        int diasTotal = fechaInicio.plusDays(duracion).getDayOfMonth();
+        LocalDate now = LocalDate.now();
+
+        if(haConcluido()){
+           sb.append("- ").append(diasTotal).append(" ").append(mesSumado).append(". ");
+           sb.append(ano).append(" (concluido)");
+        }
+        if(!haConcluido()){
+            if(fechaInicio.isAfter(now)){
+                long entreDias = DAYS.between(now, fechaInicio);
+                sb.append(ano).append(" (quedan ").append(entreDias).append(" dias)");
+            }else {
+                sb.append("- ").append(diasTotal).append(" ").append(mesSumado).append(". ");
+                sb.append(ano).append(" (ON)");
+            }
+        }
+        sb.append("\n").append("------------------------------------------------------------");
+        return sb.toString();
         
     }
 
@@ -127,7 +155,7 @@ public class Festival {
                 ": hiphop ";
         Festival f1 = FestivalesIO.parsearLinea(datosFestival);
         System.out.println(f1);
-        
+
         datosFestival = "black sound fest:badajoz:05-02-2022:  21" +
                 ":rock" + ":  blues";
         Festival f2 = FestivalesIO.parsearLinea(datosFestival);
