@@ -48,30 +48,30 @@ public class FestivalesIO {
         String nombre = sacarNombre(lineaFestival);
         String lugar = dividido[1].toUpperCase();
         DateTimeFormatter formateador = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        LocalDate tiempo = LocalDate.parse(dividido[2], formateador);
-        int duracion = Integer.valueOf(dividido[3]);
+        LocalDate fecha = LocalDate.parse(dividido[2].trim(), formateador);
+        int duracion = Integer.valueOf(dividido[3].trim());
         HashSet<Estilo> estilos = sacarEstilos(lineaFestival);
-        Festival festival = new Festival(nombre, lugar, tiempo, duracion, estilos);
+        Festival festival = new Festival(nombre, lugar, fecha, duracion, estilos);
         return festival;
     }
 
-    private static String sacarNombre(String lineaFestival) {
+    public static String sacarNombre(String lineaFestival) {
         String[] dividido = lineaFestival.split(":");
-        String[] nombreFestival = dividido[0].split(" ");
+        String[] nombreFestival = dividido[0].trim().split(" ");
         String nombreMayus = "";
         for (int i = 0; i < nombreFestival.length; i++) {
-            String str = nombreFestival[i].toUpperCase().substring(0,1);
-            nombreFestival[i] = str.concat(nombreFestival[i].substring(2));
+            String str = nombreFestival[i].trim().toUpperCase().substring(0,1);
+            nombreFestival[i] = str.concat(nombreFestival[i].substring(1));
             nombreMayus += nombreFestival[i] + " ";
         }
         return nombreMayus;
     }
     
-   private static HashSet<Estilo> sacarEstilos(String lineaFestival) {
+   public static HashSet<Estilo> sacarEstilos(String lineaFestival) {
        String[] dividido = lineaFestival.split(":");
        HashSet<Estilo> estilos = new HashSet<>();
        for (int i = 4; i < dividido.length; i++) {
-           estilos.add(Estilo.valueOf(dividido[i].toUpperCase()));
+           estilos.add(Estilo.valueOf(dividido[i].trim().toUpperCase()));
        }
        return estilos;
    }

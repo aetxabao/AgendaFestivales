@@ -1,5 +1,6 @@
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 
 /**
@@ -62,11 +63,7 @@ public class Festival {
      */
     public Mes getMes() {
         //DONE
-        String fecha = fechaInicio.toString();
-        String[] arrayFecha = fecha.split("-");
-        Mes mes = Mes.valueOf(arrayFecha[1]);
-        return mes;
-        
+        return Mes.values()[fechaInicio.getMonthValue() - 1];
     }
 
     /**
@@ -107,10 +104,43 @@ public class Festival {
      *
      */
     public String toString() {
-       //TODO
+       //DONE
+        String str = "";
+        str += getNombre() + "\t" + getEstilos();
+        str += "\n" + getLugar().toUpperCase();
+        str += "\n" + obtenerFecha();
+        System.out.println("--------------------------");
         
-        return null;
-        
+        return str;
+    }
+
+    private String obtenerFecha() {
+        String str = "";
+        int dia = getFechaInicio().getDayOfMonth();
+        int año = getFechaInicio().getYear();
+        String mes = getMes().toString().toLowerCase().substring(0,3) + ".";
+        str += String.valueOf(dia) + " " + mes + " " + String.valueOf(año);
+        LocalDate fechaFinal = getFechaInicio().plusDays(getDuracion());
+        LocalDate fechaHoy =  LocalDate.now();
+        if (getDuracion() > 1) {
+            int diaFinal = fechaFinal.getDayOfMonth();
+            int añoFinal = fechaFinal.getYear();
+            String mesFinal = Mes.values()[fechaFinal.getMonthValue() - 1].toString().toLowerCase().substring(0,3) + ".";
+            String strFinal = String.valueOf(dia) + " " + mes + " - " + String.valueOf(diaFinal) + " " + mesFinal + " " + String.valueOf(año);
+            str = strFinal;
+        }
+
+        if (fechaHoy.isBefore(fechaInicio)) {
+            str += " (quedan " + String.valueOf(fechaHoy.until(fechaInicio, ChronoUnit.DAYS)) + " dias)";
+        }
+        if (fechaInicio.isBefore(fechaHoy) && fechaHoy.isBefore(fechaFinal)) {
+            str += " (ON)";
+        }
+        if (fechaHoy.isAfter(fechaFinal)) {
+            str += " (Concluido)";
+        }
+
+        return str;
     }
 
     /**
