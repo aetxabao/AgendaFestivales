@@ -17,17 +17,22 @@ public class FestivalesIO
     public static void cargarFestivales(AgendaFestivales agenda)
     {
         Scanner sc = null;
-        try {
+        try
+        {
             sc = new Scanner(FestivalesIO.class.
                     getResourceAsStream("/festivales.csv"));
-            while (sc.hasNextLine()) {
+            while (sc.hasNextLine())
+            {
                 String lineaFestival = sc.nextLine();
                 Festival festival = parsearLinea(lineaFestival);
                 agenda.addFestival(festival);
                 
             }
-        } finally {
-            if (sc != null) {
+        }
+        finally
+        {
+            if (sc != null)
+            {
                 sc.close();
             }
         }
@@ -97,8 +102,10 @@ public class FestivalesIO
 
     private static LocalDate parsearFecha(String lineaFecha)//  26-03-2021
     {
+        LocalDate fechaLocal;
         lineaFecha = lineaFecha.trim();
-        return LocalDate.parse(lineaFecha, DateTimeFormatter.ofPattern("dd-MM-yyy"));
+        fechaLocal = LocalDate.parse(lineaFecha, DateTimeFormatter.ofPattern("dd-MM-yyy",Locale.ROOT));
+        return fechaLocal;
     }
 
     private static int parsearDuracion(String lineaDuracion)

@@ -69,7 +69,9 @@ public class Festival
     public Mes getMes()
     {
         //NOTESTED
-        return Mes.valueOf( this.getFechaInicio().getMonth().toString().toUpperCase() );
+        int numMes = fechaInicio.getMonthValue();
+
+        return Mes.values()[numMes - 1];
     }
 
     /**
