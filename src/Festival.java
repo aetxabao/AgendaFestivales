@@ -1,5 +1,6 @@
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 
 /**
@@ -59,9 +60,8 @@ public class Festival {
      *
      */
     public Mes getMes() {
-        //TODO
-        
-        return null;
+        int aux = fechaInicio.getMonthValue();
+        return Mes.values()[aux-1];
         
     }
 
@@ -72,9 +72,7 @@ public class Festival {
      * en un fecha anterior a otro
      */
     public boolean empiezaAntesQue(Festival otro) {
-        //TODO
-        
-        return true;
+        return fechaInicio.isBefore(otro.getFechaInicio());
         
     }
 
@@ -85,9 +83,7 @@ public class Festival {
      * en un fecha posteior a otro
      */
     public boolean empiezaDespuesQue(Festival otro) {
-        //TODO
-        
-        return true;
+        return fechaInicio.isAfter(otro.getFechaInicio());
         
     }
 
@@ -96,9 +92,7 @@ public class Festival {
      * @return true si el festival ya ha concluido
      */
     public boolean haConcluido() {
-        //TODO
-        
-        return true;
+        return fechaInicio.plusDays(duracion).isAfter(LocalDate.now());
 
     }
 
@@ -109,9 +103,19 @@ public class Festival {
      */
     @Override
     public String toString() {
-       //TODO
-        
-        return null;
+       StringBuilder sb = new StringBuilder();
+       sb.append(nombre).append("     ").append(estilos).append("\n").append(lugar).append("\n");
+       if(fechaInicio.isAfter(LocalDate.now())){
+           sb.append(fechaInicio.getDayOfMonth()).append(getMes().toString().toLowerCase().substring(0,3)).append(fechaInicio.getYear()).append(" (quedan ").append(ChronoUnit.DAYS.between(LocalDate.now(),fechaInicio)).append(" días)");
+       } else if(duracion == 1){
+           sb.append(fechaInicio.toString());
+       }else if(fechaInicio.isEqual(LocalDate.now())){
+           sb.append(fechaInicio.getDayOfMonth()).append(getMes().toString().toLowerCase().substring(0,3)).append(" - ").append(fechaInicio.plusDays(duracion).getDayOfMonth()).append(fechaInicio.plusDays(duracion).getMonth().toString().toLowerCase().substring(0,3)).append(fechaInicio.getYear()).append(" (ON)");
+       } else if(fechaInicio.isBefore(LocalDate.now())){
+            sb.append(fechaInicio.getDayOfMonth()).append(getMes().toString().toLowerCase().substring(0,3)).append(" - ").append(fechaInicio.plusDays(duracion).getDayOfMonth()).append(fechaInicio.plusDays(duracion).getMonth().toString().toLowerCase().substring(0,3)).append(fechaInicio.getYear()).append(" (concluido)");
+        }
+        sb.append("\n").append("---------------------------------------------------------");
+        return sb.toString();
         
     }
 
