@@ -7,8 +7,9 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Scanner;
 
+
 /**
- * La clase contiene mÈodos est·ticos que permiten
+ * La clase contiene m√©odos est√°ticos que permiten
  * cargar la agenda de festivales leyendo los datos desde
  * un fichero
  */
@@ -38,7 +39,7 @@ public class FestivalesIO
     }
 
     /**
-     * se parsea la lÌnea extrayendo sus datos y creando y
+     * se parsea la l√≠nea extrayendo sus datos y creando y
      * devolviendo un objeto Festival
      * @param lineaFestival los datos de un festival
      * @return el festival creado
