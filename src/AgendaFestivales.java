@@ -1,6 +1,9 @@
+/**
+ * @author jgrijalaz - Javier Grijalba
+ * @version 24.02.22
+ */
 
 import java.util.*;
-
 
 /**
  * Esta clase guarda una agenda con los festivales programados
@@ -41,7 +44,6 @@ public class AgendaFestivales
      */
     public void addFestival(Festival festival)
     {
-        //TODO
         Mes mesClave = festival.getMes();
         ArrayList<Festival> festivalesEnMes;
         int posInsercion;
@@ -58,7 +60,6 @@ public class AgendaFestivales
             posInsercion = obtenerPosicionDeInsercion(festivalesEnMes,festival);
             festivalesEnMes.add(posInsercion, festival);
         }
-        
     }
 
     /**
@@ -70,14 +71,13 @@ public class AgendaFestivales
     private int obtenerPosicionDeInsercion(ArrayList<Festival> festivalesEnMes,
                                            Festival festival)
     {
-        //NOTESTED
         String nuevoF = festival.getNombre();
         String festivalEnI;
 
         for (int i = 0; i < festivalesEnMes.size(); i++)
         {
             festivalEnI = festivalesEnMes.get(i).getNombre();
-            if( nuevoF.compareToIgnoreCase(festivalEnI) > 0 )
+            if( nuevoF.compareToIgnoreCase(festivalEnI) < 0 )
             {
                 return i;
             }
@@ -94,7 +94,6 @@ public class AgendaFestivales
     @Override
     public String toString()
     {
-        //NOTESTED
         StringBuilder salida = new StringBuilder();
         salida.append("\n");
 
@@ -130,7 +129,6 @@ public class AgendaFestivales
      */
     public int festivalesEnMes(Mes mes)
     {
-       //NOTESTED
         if(agenda.containsKey(mes))
         {
             return agenda.get(mes).size();
@@ -152,7 +150,6 @@ public class AgendaFestivales
      */
     public HashMap<Estilo,TreeSet<String>>  festivalesPorEstilo()
     {
-        //TODO
         HashMap<Estilo,TreeSet<String>> festivalesPorEstilo = new HashMap<Estilo,TreeSet<String>>();
         TreeSet<String> arbolFestivalesDeEstiloX;
 
@@ -181,7 +178,7 @@ public class AgendaFestivales
     /**
      * Se cancelan todos los festivales organizados en alguno de los
      * lugares que indica el conjunto en el mes indicado. Los festivales
-     * concluidos o que no empezados no se tienen en cuenta
+     * concluidos no se tienen en cuenta
      * Hay que borrarlos de la agenda
      * Si el mes no existe se devuelve -1
      *
@@ -190,8 +187,35 @@ public class AgendaFestivales
      */
     public int cancelarFestivales(HashSet<String> lugares, Mes mes)
     {
-       //TODO
-        
-        return 0;
+        int numCancelados = 0;
+        ArrayList<Festival> festivales;
+        Festival festi;
+
+        if(!agenda.containsKey(mes))
+            return -1;
+
+        festivales = agenda.get(mes);
+
+        // Para cada festival del mes ...
+        for (int i = festivales.size() - 1; i >= 0 ; i--)
+        {
+            festi = festivales.get(i);
+            // Si esta en 'lugares' y no ha concluido ...
+            if(lugares.contains(festi.getLugar()) && !festi.haConcluido())
+            {
+                // lo borra.
+                festivales.remove(i);
+                numCancelados++;
+            }
+        }
+
+        // Si el mes ha quedado a 0 festivales ...
+        // if(agenda.get(mes).size() == 0)
+        if(festivales.size() == 0)
+        {
+            agenda.remove(mes);
+        }
+        return numCancelados;
     }
+
 }

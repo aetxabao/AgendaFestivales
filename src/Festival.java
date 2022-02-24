@@ -68,7 +68,6 @@ public class Festival
      */
     public Mes getMes()
     {
-        //NOTESTED
         int numMes = fechaInicio.getMonthValue();
 
         return Mes.values()[numMes - 1];
@@ -81,7 +80,6 @@ public class Festival
      */
     public boolean empiezaAntesQue(Festival otro)
     {
-        //NOTESTED
         return fechaInicio.isBefore(otro.getFechaInicio());
     }
 
@@ -92,7 +90,6 @@ public class Festival
      */
     public boolean empiezaDespuesQue(Festival otro)
     {
-        //NOTESTED
         return this.getFechaInicio().isAfter(otro.getFechaInicio());
     }
 
@@ -101,7 +98,6 @@ public class Festival
      */
     public boolean haConcluido()
     {
-        //NOTESTED
         LocalDate fechaFin = this.getFechaInicio().plusDays(this.duracion);
         return fechaFin.isBefore(LocalDate.now());
     }
@@ -123,6 +119,9 @@ public class Festival
         return salida;
     }
 
+    /**
+     * Construlle la linea de las fechas
+     */
     private String lineaFecha()
     {
         String lineaFecha;
@@ -168,6 +167,9 @@ public class Festival
         return lineaFecha;
     }
 
+    /**
+     * Devuelve las tres primeras iniciales del mes en 'fecha'
+     */
     private String iniciales(LocalDate fecha)
     {
         String nombreMes = Mes.values()[ fecha.getMonthValue() - 1].toString();

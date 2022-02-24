@@ -18,7 +18,7 @@ public class TestAgendaFestivales
         testCargarAgenda(agenda);
         testFestivalesEnMes(agenda);
         testFestivalesPorEstilo(agenda);
-//        testCancelarFestivales(agenda);
+        testCancelarFestivales(agenda);
     }
 
     private static void testCargarAgenda(AgendaFestivales agenda)
@@ -27,7 +27,6 @@ public class TestAgendaFestivales
          System.out.println(agenda);
          System.out.println();
     }
-
 
     private static void testFestivalesEnMes(AgendaFestivales agenda)
     {
@@ -52,7 +51,7 @@ public class TestAgendaFestivales
 
          System.out.println();
     }
-  /*
+
     private static void testCancelarFestivales(AgendaFestivales agenda)
     {
          HashSet<String> lugares = new HashSet<>(Arrays.asList("VITORIA",
@@ -81,8 +80,6 @@ public class TestAgendaFestivales
          System.out.println("Después de borrar ....");
          System.out.println(agenda);
     }
-
-    */
 
 }
 

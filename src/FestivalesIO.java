@@ -26,7 +26,6 @@ public class FestivalesIO
                 String lineaFestival = sc.nextLine();
                 Festival festival = parsearLinea(lineaFestival);
                 agenda.addFestival(festival);
-                
             }
         }
         finally
@@ -125,6 +124,7 @@ public class FestivalesIO
         return estilos;
     }
 
+    // test propio
     public static void main(String[] args)
     {
         Festival unFestival = FestivalesIO.parsearLinea("Pueblos blancos Music festivales.modelo.Festival:  ronda:28-07-2022: 4: blues: rock");
