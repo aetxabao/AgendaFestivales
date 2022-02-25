@@ -42,9 +42,15 @@ public class AgendaFestivales {
      *
      */
     public void addFestival(Festival festival) {
-        //TODO
-        
-        
+        //DONE
+        if (!agenda.containsKey(festival.getMes())) {
+            ArrayList<Festival> fest = new ArrayList<>();
+            fest.add(festival);
+            agenda.put(festival.getMes(), fest);
+        } else {
+            int n = obtenerPosicionDeInsercion(agenda.get(festival.getMes()), festival);
+            agenda.get(festival.getMes()).add(n, festival);
+        }
     }
 
     /**
@@ -57,8 +63,14 @@ public class AgendaFestivales {
     private int obtenerPosicionDeInsercion(ArrayList<Festival> festivales,
                                            Festival festival) {
        //TODO
-        
-        return 0;
+        int n = 0;
+        for (int i = 0; i < festivales.size(); i++) {
+            if (festivales.get(i).getNombre().compareTo(festival.getNombre()) > 0 || festivales.get(i).getNombre().compareTo(festival.getNombre()) == 0) {
+                return n;
+            }
+            n++;
+        }
+        return n;
         
     }
 
@@ -69,9 +81,17 @@ public class AgendaFestivales {
      */
     @Override
     public String toString() {
-        //TODO
-        
-        return null;
+        //DONE
+        StringBuilder sb = new StringBuilder("Festivales\n");
+        Set<Map.Entry<Mes, ArrayList<Festival>>> entries = agenda.entrySet();
+        for (Map.Entry<Mes, ArrayList<Festival>> entry : entries) {
+            ArrayList<Festival> f = entry.getValue();
+            sb.append("\n").append(entry.getKey()).append(" (").append(f.size()).append(" festival/es)\n");
+            for (Festival festival : f) {
+                sb.append(festival).append("\n");
+            }
+        }
+        return sb.toString();
     }
 
     /**
@@ -81,9 +101,12 @@ public class AgendaFestivales {
      * Si el mes no existe se devuelve -1
      */
     public int festivalesEnMes(Mes mes) {
-       //TODO
-        
-        return 0;
+       //DONE
+        if (!agenda.containsKey(mes)) {
+            return 0;
+        } else {
+            return agenda.get(mes).size();
+        }
     }
 
     /**
