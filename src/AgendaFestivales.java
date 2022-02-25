@@ -172,7 +172,6 @@ public class AgendaFestivales
                 }
             }
         }
-
         return festivalesPorEstilo;
     }
 
