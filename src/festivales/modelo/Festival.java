@@ -1,7 +1,11 @@
+package festivales.modelo;
+
+import festivales.io.FestivalesIO;
 
 import java.time.LocalDate;
-import java.time.Period;
 import java.util.HashSet;
+
+import static java.time.temporal.ChronoUnit.DAYS;
 
 /**
  * Un objeto de esta clase almacena los datos de un
@@ -115,14 +119,14 @@ public class Festival {
         sb.append(mes);
         if (duracion != 1) {
             sb.append(" - ").append(fechaInicio.plusDays(duracion).getDayOfMonth()).append(" ");
-            sb.append(getMes().toString().toLowerCase().substring(0, 3).concat("."));
+            sb.append(Mes.values()[fechaInicio.plusDays(duracion).getMonthValue() - 1].toString().toLowerCase().substring(0, 3).concat("."));
         }
         sb.append(" ").append(fechaInicio.getYear());
         if (haConcluido()) {
             sb.append(" (concluido)");
         } else if (fechaInicio.isAfter(LocalDate.now())) {
-            Period cuanto = LocalDate.now().until(fechaInicio);
-            sb.append(" (quedan ").append(cuanto.getDays()).append(" días)");
+            long cuanto = DAYS.between(LocalDate.now(), fechaInicio);
+            sb.append(" (quedan ").append(cuanto).append(" días)");
         } else {
             sb.append(" (ON)");
         }
