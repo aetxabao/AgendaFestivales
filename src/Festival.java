@@ -1,6 +1,9 @@
 
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
+import java.util.Locale;
 
 /**
  * Un objeto de esta clase almacena los datos de un
@@ -10,7 +13,8 @@ import java.util.HashSet;
  * se engloba en un conjunto determinado de estilos
  *
  */
-public class Festival {
+public class Festival
+{
     private final String nombre;
     private final String lugar;
     private final LocalDate fechaInicio;
@@ -19,107 +23,166 @@ public class Festival {
     
     
     public Festival(String nombre, String lugar, LocalDate fechaInicio,
-                    int duracion, HashSet<Estilo> estilos) {
+                    int duracion, HashSet<Estilo> estilos)
+    {
         this.nombre = nombre;
         this.lugar = lugar;
         this.fechaInicio = fechaInicio;
         this.duracion = duracion;
         this.estilos = estilos;
-        
     }
     
-    public String getNombre() {
+    public String getNombre()
+    {
         return nombre;
     }
     
-    public String getLugar() {
+    public String getLugar()
+    {
         return lugar;
     }
     
-    public LocalDate getFechaInicio() {
+    public LocalDate getFechaInicio()
+    {
         return fechaInicio;
     }
     
-    public int getDuracion() {
+    public int getDuracion()
+    {
         return duracion;
     }
     
-    public HashSet<Estilo> getEstilos() {
+    public HashSet<Estilo> getEstilos()
+    {
         return estilos;
     }
     
-    public void addEstilo(Estilo estilo) {
+    public void addEstilo(Estilo estilo)
+    {
         this.estilos.add(estilo);
-        
     }
 
     /**
      * devuelve el mes de celebración del festival, como
      * valor enumerado
-     *
      */
-    public Mes getMes() {
-        //TODO
-        
-        return null;
-        
+    public Mes getMes()
+    {
+        int numMes = fechaInicio.getMonthValue();
+
+        return Mes.values()[numMes - 1];
     }
 
     /**
-     *
-     * @param otro
      * @return true si el festival actual empieza
      * en un fecha anterior a otro
+     * @param otro
      */
-    public boolean empiezaAntesQue(Festival otro) {
-        //TODO
-        
-        return true;
-        
+    public boolean empiezaAntesQue(Festival otro)
+    {
+        return fechaInicio.isBefore(otro.getFechaInicio());
     }
 
     /**
-     *
      * @param otro
      * @return true si el festival actual empieza
      * en un fecha posteior a otro
      */
-    public boolean empiezaDespuesQue(Festival otro) {
-        //TODO
-        
-        return true;
-        
+    public boolean empiezaDespuesQue(Festival otro)
+    {
+        return this.getFechaInicio().isAfter(otro.getFechaInicio());
     }
 
     /**
-     *
      * @return true si el festival ya ha concluido
      */
-    public boolean haConcluido() {
-        //TODO
-        
-        return true;
-
+    public boolean haConcluido()
+    {
+        LocalDate fechaFin = this.getFechaInicio().plusDays(this.duracion);
+        return fechaFin.isBefore(LocalDate.now());
     }
 
     /**
      * Representación textual del festival, exactamente
      * como se indica en el enunciado
-     *
      */
     @Override
-    public String toString() {
-       //TODO
-        
-        return null;
-        
+    public String toString()
+    {
+        String salida = "\n";
+
+        salida += this.getNombre() + "      ";
+        salida += this.getEstilos();
+        salida += "\n" + this.getLugar();
+        salida += "\n" + lineaFecha() + "\n";
+
+        return salida;
+    }
+
+    /**
+     * Construlle la linea de las fechas
+     */
+    private String lineaFecha()
+    {
+        String lineaFecha;
+        LocalDate fechaInicio = getFechaInicio();
+        LocalDate fechaFin = fechaInicio.plusDays(duracion);
+        LocalDate ahora = LocalDate.now();
+        // si solo dura un dia, la fecha de fin es la misma que la de inicio)
+
+        // Escribo la fecha de inicio
+        lineaFecha = "" + getFechaInicio().getDayOfMonth();
+        lineaFecha += " " + iniciales(fechaInicio);
+
+        // Si dura mas de un dia
+        if(duracion > 1)
+        {
+            // Escribo la fecha de fin
+            lineaFecha += " - " + fechaFin.getDayOfMonth();
+            lineaFecha += " " + iniciales(fechaFin);
+        }
+
+        // Escribo el año
+        lineaFecha += " " + fechaFin.getYear();
+
+        // si ahora es despues de inicio
+        if(ahora.isAfter(fechaInicio))
+        {
+            // o bien aun no ha acabado, sigue en curso
+            if(ahora.isBefore(fechaFin))
+            {
+                lineaFecha += " (ON)";
+            }
+            // o ya ha concluido
+            else
+            {
+                lineaFecha += " (concluido)";
+            }
+        }
+        else
+        {
+            lineaFecha += " (quedan " + ChronoUnit.DAYS.between(ahora,fechaInicio) + " dias)";
+        }
+
+        return lineaFecha;
+    }
+
+    /**
+     * Devuelve las tres primeras iniciales del mes en 'fecha'
+     */
+    private String iniciales(LocalDate fecha)
+    {
+        String nombreMes = Mes.values()[ fecha.getMonthValue() - 1].toString();
+
+        return nombreMes.substring(0,3).toLowerCase() + ".";
     }
 
     /**
      * Código para probar la clase Festival
      *
      */
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         System.out.println("Probando clase Festival");
         String datosFestival = "Gazpatxo Rock : " +
                 "valencia: 28-02-2022  :1  :rock" +
@@ -159,8 +222,5 @@ public class Festival {
         System.out.println(f4.getNombre() + " ha concluido? " + f4.haConcluido());
         System.out.println(f1);
         System.out.println(f1.getNombre() + " ha concluido? " + f1.haConcluido());
- 
-        
-        
     }
 }
