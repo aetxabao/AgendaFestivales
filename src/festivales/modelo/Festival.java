@@ -1,6 +1,11 @@
+package festivales.modelo;
+
+import festivales.io.FestivalesIO;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+
+import static java.time.temporal.ChronoUnit.DAYS;
 
 /**
  * Un objeto de esta clase almacena los datos de un
@@ -9,6 +14,7 @@ import java.util.HashSet;
  * en una determinada fecha, dura una serie de días y
  * se engloba en un conjunto determinado de estilos
  *
+ * @author Sergio Cobos Lorca
  */
 public class Festival {
     private final String nombre;
@@ -50,7 +56,6 @@ public class Festival {
     
     public void addEstilo(Estilo estilo) {
         this.estilos.add(estilo);
-        
     }
 
     /**
@@ -59,10 +64,8 @@ public class Festival {
      *
      */
     public Mes getMes() {
-        //TODO
-        
-        return null;
-        
+        //DONE
+        return Mes.values()[fechaInicio.getMonthValue() - 1];
     }
 
     /**
@@ -72,10 +75,8 @@ public class Festival {
      * en un fecha anterior a otro
      */
     public boolean empiezaAntesQue(Festival otro) {
-        //TODO
-        
-        return true;
-        
+        //DONE
+        return fechaInicio.isBefore(otro.getFechaInicio());
     }
 
     /**
@@ -85,10 +86,8 @@ public class Festival {
      * en un fecha posteior a otro
      */
     public boolean empiezaDespuesQue(Festival otro) {
-        //TODO
-        
-        return true;
-        
+        //DONE
+        return fechaInicio.isAfter(otro.getFechaInicio());
     }
 
     /**
@@ -96,10 +95,8 @@ public class Festival {
      * @return true si el festival ya ha concluido
      */
     public boolean haConcluido() {
-        //TODO
-        
-        return true;
-
+        //DONE
+        return fechaInicio.plusDays(duracion).isBefore(LocalDate.now());
     }
 
     /**
@@ -109,10 +106,32 @@ public class Festival {
      */
     @Override
     public String toString() {
-       //TODO
-        
-        return null;
-        
+       //DONE
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("%-32s",nombre)).append(estilos.toString());
+        sb.append("\n").append(lugar).append("\n");
+        int dia = fechaInicio.getDayOfMonth();
+        if (dia < 10) {
+            sb.append(0);
+        }
+        sb.append(dia).append(" ");
+        String mes = getMes().toString().toLowerCase().substring(0, 3).concat(".");
+        sb.append(mes);
+        if (duracion != 1) {
+            sb.append(" - ").append(fechaInicio.plusDays(duracion).getDayOfMonth()).append(" ");
+            sb.append(Mes.values()[fechaInicio.plusDays(duracion).getMonthValue() - 1].toString().toLowerCase().substring(0, 3).concat("."));
+        }
+        sb.append(" ").append(fechaInicio.getYear());
+        if (haConcluido()) {
+            sb.append(" (concluido)");
+        } else if (fechaInicio.isAfter(LocalDate.now())) {
+            long cuanto = DAYS.between(LocalDate.now(), fechaInicio);
+            sb.append(" (quedan ").append(cuanto).append(" días)");
+        } else {
+            sb.append(" (ON)");
+        }
+        sb.append("\n----------------------------------------------------");
+        return sb.toString();
     }
 
     /**
@@ -159,8 +178,5 @@ public class Festival {
         System.out.println(f4.getNombre() + " ha concluido? " + f4.haConcluido());
         System.out.println(f1);
         System.out.println(f1.getNombre() + " ha concluido? " + f1.haConcluido());
- 
-        
-        
     }
 }
