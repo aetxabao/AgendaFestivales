@@ -1,9 +1,6 @@
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.time.LocalDate;
+import java.util.*;
 
 
 /**
@@ -42,9 +39,15 @@ public class AgendaFestivales {
      *
      */
     public void addFestival(Festival festival) {
-        //TODO
-        
-        
+        //DONE
+            if(agenda.containsKey(festival.getMes())){
+            ArrayList<Festival> a = agenda.get(festival.getMes());
+            a.add(obtenerPosicionDeInsercion(a, festival),festival);
+        } else {
+            ArrayList<Festival> a = new ArrayList<>();
+            a.add(festival);
+            agenda.put(festival.getMes(),a);
+        }
     }
 
     /**
@@ -56,10 +59,15 @@ public class AgendaFestivales {
      */
     private int obtenerPosicionDeInsercion(ArrayList<Festival> festivales,
                                            Festival festival) {
-       //TODO
-        
-        return 0;
-        
+       //DONE
+        int posicion = 0;
+        for (int i = 0; i < festivales.size(); i++) {
+            Festival mayor = festivales.get(0);
+            if(festivales.get(i).getNombre().compareTo(mayor.getNombre()) > 0){
+                mayor = festivales.get(i);
+            }
+        }
+        return posicion;
     }
 
     /**
@@ -69,9 +77,18 @@ public class AgendaFestivales {
      */
     @Override
     public String toString() {
-        //TODO
-        
-        return null;
+        //DONE
+        StringBuilder sb = new StringBuilder();
+        Set<Map.Entry<Mes, ArrayList<Festival>>> entries = agenda.entrySet();
+        sb.append("\n").append("Festivales").append("\n\n");
+        for (Map.Entry<Mes, ArrayList<Festival>> entry : entries) {
+            sb.append(entry.getKey()).append(" (").append(entry.getValue().size()).append("festival/es)").append("\n");
+            for ( Festival e: entry.getValue()) {
+                sb.append(e.toString()).append("\n");
+            }
+            sb.append("\n\n");
+        }
+        return sb.toString();
     }
 
     /**
@@ -81,9 +98,15 @@ public class AgendaFestivales {
      * Si el mes no existe se devuelve -1
      */
     public int festivalesEnMes(Mes mes) {
-       //TODO
-        
-        return 0;
+       //DONE
+        int total = 0;
+        Set<Map.Entry<Mes, ArrayList<Festival>>> entries = agenda.entrySet();
+        for (Map.Entry<Mes, ArrayList<Festival>> entry : entries) {
+            if (entry.getKey().equals(mes)){
+                total += entry.getValue().size();
+            }
+        }
+        return total;
     }
 
     /**
@@ -95,12 +118,25 @@ public class AgendaFestivales {
      *
      * Identifica el tipo exacto del valor de retorno
      */
-    public  Map   festivalesPorEstilo() {
-       //TODO
-
-         
-
-        return null;
+    public  TreeMap<Estilo, TreeSet<String>>   festivalesPorEstilo() {
+       //DONE
+        TreeMap<Estilo, TreeSet<String>> e = new TreeMap<>();
+        for (Mes m : agenda.keySet()) {
+            for (int i = 0; i < agenda.get(m).size(); i++) {
+                HashSet<Estilo> estilo = agenda.get(m).get(i).getEstilos();
+                for (Estilo es : estilo) {
+                    if(e.containsKey(es)){
+                        TreeSet<String> n = e.get(es);
+                        n.add(agenda.get(m).get(i).getNombre());
+                    } else {
+                        TreeSet<String> n = new TreeSet<>();
+                        n.add(agenda.get(m).get(i).getNombre());
+                        e.put(es,n);
+                    }
+                }
+            }
+        }
+        return e;
     }
 
     /**
@@ -115,7 +151,21 @@ public class AgendaFestivales {
      */
     public int cancelarFestivales(HashSet<String> lugares, Mes mes) {
        //TODO
-        
-        return 0;
+        int cancelados = 0;
+        if (!agenda.containsKey(mes)){
+            return -1;
+        } else {
+            Set<Map.Entry<Mes, ArrayList<Festival>>> entries = agenda.entrySet();
+            for (Map.Entry<Mes, ArrayList<Festival>> entry : entries) {
+                for (int i = 0; i < entry.getValue().size(); i++) {
+                    if(lugares.contains(entry.getValue().get(i).getLugar()) &&
+                            entry.getValue().get(i).getMes().equals(mes)){
+                        entry.getValue().remove(i);
+                        cancelados++;
+                    }
+                }
+            }
+        }
+        return cancelados;
     }
 }

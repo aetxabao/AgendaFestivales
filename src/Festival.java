@@ -115,7 +115,7 @@ public class Festival {
     public String toString() {
         //DONE
         StringBuilder sb = new StringBuilder();
-        sb.append(nombre).append("\t\t\t\t\t").append(estilos.toString()).append("\n").
+        sb.append(nombre).append(String.format("%-20s", " ")).append(estilos.toString()).append("\n").
                 append(lugar).append("\n");
         if (duracion <= 1) {
             sb.append(fechaInicio.getDayOfMonth()).append(" ").
