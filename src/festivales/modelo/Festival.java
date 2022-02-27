@@ -1,6 +1,15 @@
+package festivales.modelo;
+
+import festivales.io.FestivalesIO;
 
 import java.time.LocalDate;
+import java.time.Month;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.HashSet;
+import java.util.Locale;
+
+
 
 /**
  * Un objeto de esta clase almacena los datos de un
@@ -8,6 +17,8 @@ import java.util.HashSet;
  * Todo festival tiene un nombre, se celebra en un lugar
  * en una determinada fecha, dura una serie de días y
  * se engloba en un conjunto determinado de estilos
+ *
+ * @author Adrian Garcia Galera
  *
  */
 public class Festival {
@@ -27,7 +38,7 @@ public class Festival {
         this.estilos = estilos;
         
     }
-    
+
     public String getNombre() {
         return nombre;
     }
@@ -59,10 +70,9 @@ public class Festival {
      *
      */
     public Mes getMes() {
-        //TODO
-        
-        return null;
-        
+        Month mes = getFechaInicio().getMonth();
+        String mesEsp = mes.getDisplayName(TextStyle.FULL, new Locale("es", "ES"));
+        return Mes.valueOf(mesEsp.toUpperCase());
     }
 
     /**
@@ -72,9 +82,8 @@ public class Festival {
      * en un fecha anterior a otro
      */
     public boolean empiezaAntesQue(Festival otro) {
-        //TODO
-        
-        return true;
+
+        return getFechaInicio().isBefore(otro.getFechaInicio());
         
     }
 
@@ -85,9 +94,8 @@ public class Festival {
      * en un fecha posteior a otro
      */
     public boolean empiezaDespuesQue(Festival otro) {
-        //TODO
         
-        return true;
+        return getFechaInicio().isAfter(otro.getFechaInicio());
         
     }
 
@@ -96,9 +104,8 @@ public class Festival {
      * @return true si el festival ya ha concluido
      */
     public boolean haConcluido() {
-        //TODO
-        
-        return true;
+        LocalDate fechaFinal = getFechaInicio().plusDays(getDuracion());
+        return fechaFinal.isBefore(LocalDate.now());
 
     }
 
@@ -109,18 +116,52 @@ public class Festival {
      */
     @Override
     public String toString() {
-       //TODO
-        
-        return null;
+
+        Festival festivalActual = new Festival("x", "xx", LocalDate.now(), 1, null);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        int diaInicio = getFechaInicio().getDayOfMonth();
+        String mes = getMes().toString().substring(0,3).toLowerCase();
+        int anio = getFechaInicio().getYear();
+
+        String fechaFinalstr = (getFechaInicio().plusDays(getDuracion())).format(formatter);
+        LocalDate fechaFinal = LocalDate.parse(fechaFinalstr, formatter);
+        Month month = fechaFinal.getMonth();
+        String mesFinal = month.getDisplayName(TextStyle.FULL, new Locale("es", "ES"));
+        mesFinal = mesFinal.substring(0,3).toLowerCase();
+
+        int diasRestantes = (getFechaInicio().getDayOfYear()) - (LocalDate.now().getDayOfYear());
+
+        if (empiezaDespuesQue(festivalActual)){
+            return "\n" + getNombre() + "     " + getEstilos() + "\n" +
+                    getLugar() + "\n" +
+                    String.valueOf(diaInicio) + " " + mes + ". " + String.valueOf(anio) +
+                    "(quedan " + String.valueOf(diasRestantes) + " dias)\n----------------";
+        }else if(haConcluido()){
+            return "\n" + getNombre() + "     " + getEstilos() + "\n" +
+                    getLugar() + "\n" +
+                    String.valueOf(diaInicio) + " " + mes + ". -" + fechaFinal.getDayOfMonth() +
+                    " " + mesFinal + ". " + fechaFinal.getYear() +
+                    "(concluido)\n----------------";
+
+        }else{
+            return "\n" + getNombre() + "     " + getEstilos() + "\n" +
+                    getLugar() + "\n" +
+                    String.valueOf(diaInicio) + " " + mes + ". -" + fechaFinal.getDayOfMonth() +
+                    " " + mesFinal + ". " + fechaFinal.getYear() +
+                    "(ON)\n----------------";
+        }
+
         
     }
 
     /**
-     * Código para probar la clase Festival
+     * Código para probar la clase festivales.modelo.Festival
      *
      */
     public static void main(String[] args) {
-        System.out.println("Probando clase Festival");
+        System.out.println("Probando clase festivales.modelo.Festival");
         String datosFestival = "Gazpatxo Rock : " +
                 "valencia: 28-02-2022  :1  :rock" +
                 ":punk " +
