@@ -84,7 +84,7 @@ public class AgendaFestivales {
         StringBuilder sb = new StringBuilder();
         Set<Map.Entry<Mes, ArrayList<Festival>>> entries = agenda.entrySet();
         for (Map.Entry<Mes, ArrayList<Festival>> entry : entries) {
-            sb.append("Festivales\n\n").append(entry.getKey()).append(" ").append("(").append(festivalesEnMes(entry.getKey())).append("festival/es").append(")\n");
+            sb.append("Festivales\n\n").append(entry.getKey()).append(" ").append("(").append(festivalesEnMes(entry.getKey())).append(" festival/es").append(")\n");
             ArrayList<Festival> festivales = entry.getValue();
             for (Festival festivale : festivales) {
                 sb.append(festivale).append("\n");
