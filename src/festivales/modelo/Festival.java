@@ -1,11 +1,11 @@
+package festivales.modelo;
+
+import festivales.io.FestivalesIO;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.time.chrono.ChronoLocalDate;
-import java.time.chrono.Chronology;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
 
@@ -134,19 +134,19 @@ public class Festival {
         int diasRestantes = (getFechaInicio().getDayOfYear()) - (LocalDate.now().getDayOfYear());
 
         if (empiezaDespuesQue(festivalActual)){
-            return getNombre() + "     " + getEstilos() + "\n" +
+            return "\n" + getNombre() + "     " + getEstilos() + "\n" +
                     getLugar() + "\n" +
                     String.valueOf(diaInicio) + " " + mes + ". " + String.valueOf(anio) +
                     "(quedan " + String.valueOf(diasRestantes) + " dias)\n----------------";
         }else if(haConcluido()){
-            return getNombre() + "     " + getEstilos() + "\n" +
+            return "\n" + getNombre() + "     " + getEstilos() + "\n" +
                     getLugar() + "\n" +
                     String.valueOf(diaInicio) + " " + mes + ". -" + fechaFinal.getDayOfMonth() +
                     " " + mesFinal + ". " + fechaFinal.getYear() +
                     "(concluido)\n----------------";
 
         }else{
-            return getNombre() + "     " + getEstilos() + "\n" +
+            return "\n" + getNombre() + "     " + getEstilos() + "\n" +
                     getLugar() + "\n" +
                     String.valueOf(diaInicio) + " " + mes + ". -" + fechaFinal.getDayOfMonth() +
                     " " + mesFinal + ". " + fechaFinal.getYear() +
@@ -157,11 +157,11 @@ public class Festival {
     }
 
     /**
-     * Código para probar la clase Festival
+     * Código para probar la clase festivales.modelo.Festival
      *
      */
     public static void main(String[] args) {
-        System.out.println("Probando clase Festival");
+        System.out.println("Probando clase festivales.modelo.Festival");
         String datosFestival = "Gazpatxo Rock : " +
                 "valencia: 28-02-2022  :1  :rock" +
                 ":punk " +
