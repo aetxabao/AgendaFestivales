@@ -1,9 +1,11 @@
+package festivales.io;
 
+import festivales.modelo.AgendaFestivales;
+import festivales.modelo.Estilo;
+import festivales.modelo.Festival;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.Scanner;
 
 /**
@@ -37,7 +39,7 @@ public class FestivalesIO {
 
     /**
      * se parsea la línea extrayendo sus datos y creando y
-     * devolviendo un objeto Festival
+     * devolviendo un objeto festivales.modelo.Festival
      * @param lineaFestival los datos de un festival
      * @return el festival creado
      */
