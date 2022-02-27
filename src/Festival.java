@@ -1,5 +1,6 @@
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 
 /**
@@ -8,6 +9,8 @@ import java.util.HashSet;
  * Todo festival tiene un nombre, se celebra en un lugar
  * en una determinada fecha, dura una serie de días y
  * se engloba en un conjunto determinado de estilos
+ *
+ * @Autor Juan Garbayo
  *
  */
 public class Festival {
@@ -59,10 +62,8 @@ public class Festival {
      *
      */
     public Mes getMes() {
-        //TODO
-        
-        return null;
-        
+        //DONE
+        return Mes.values()[fechaInicio.getMonthValue() - 1];
     }
 
     /**
@@ -72,10 +73,8 @@ public class Festival {
      * en un fecha anterior a otro
      */
     public boolean empiezaAntesQue(Festival otro) {
-        //TODO
-        
-        return true;
-        
+        //DONE
+        return fechaInicio.isBefore(otro.fechaInicio);
     }
 
     /**
@@ -85,9 +84,8 @@ public class Festival {
      * en un fecha posteior a otro
      */
     public boolean empiezaDespuesQue(Festival otro) {
-        //TODO
-        
-        return true;
+        //DONE
+        return fechaInicio.isAfter(otro.fechaInicio);
         
     }
 
@@ -96,10 +94,8 @@ public class Festival {
      * @return true si el festival ya ha concluido
      */
     public boolean haConcluido() {
-        //TODO
-        
-        return true;
-
+        //DONE
+        return fechaInicio.plusDays(duracion).isBefore(LocalDate.now());
     }
 
     /**
@@ -107,12 +103,44 @@ public class Festival {
      * como se indica en el enunciado
      *
      */
-    @Override
     public String toString() {
-       //TODO
+       //DONE
+        String str = "";
+        str += getNombre() + "\t" + getEstilos();
+        str += "\n" + getLugar().toUpperCase();
+        str += "\n" + obtenerFecha();
+        System.out.println("--------------------------");
         
-        return null;
-        
+        return str;
+    }
+
+    private String obtenerFecha() {
+        String str = "";
+        int dia = getFechaInicio().getDayOfMonth();
+        int año = getFechaInicio().getYear();
+        String mes = getMes().toString().toLowerCase().substring(0,3) + ".";
+        str += String.valueOf(dia) + " " + mes + " " + String.valueOf(año);
+        LocalDate fechaFinal = getFechaInicio().plusDays(getDuracion());
+        LocalDate fechaHoy =  LocalDate.now();
+        if (getDuracion() > 1) {
+            int diaFinal = fechaFinal.getDayOfMonth();
+            int añoFinal = fechaFinal.getYear();
+            String mesFinal = Mes.values()[fechaFinal.getMonthValue() - 1].toString().toLowerCase().substring(0,3) + ".";
+            String strFinal = String.valueOf(dia) + " " + mes + " - " + String.valueOf(diaFinal) + " " + mesFinal + " " + String.valueOf(año);
+            str = strFinal;
+        }
+
+        if (fechaHoy.isBefore(fechaInicio)) {
+            str += " (quedan " + String.valueOf(fechaHoy.until(fechaInicio, ChronoUnit.DAYS)) + " dias)";
+        }
+        if (fechaInicio.isBefore(fechaHoy) && fechaHoy.isBefore(fechaFinal)) {
+            str += " (ON)";
+        }
+        if (fechaHoy.isAfter(fechaFinal)) {
+            str += " (Concluido)";
+        }
+
+        return str;
     }
 
     /**
