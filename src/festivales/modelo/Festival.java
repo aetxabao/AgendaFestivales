@@ -1,12 +1,17 @@
+package festivales.modelo;
+
+import festivales.io.FestivalesIO;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 
 /**
  * Un objeto de esta clase almacena los datos de un
  * festival.
  * Todo festival tiene un nombre, se celebra en un lugar
- * en una determinada fecha, dura una serie de dÌas y
+ * en una determinada fecha, dura una serie de d√≠as y
  * se engloba en un conjunto determinado de estilos
  *
  */
@@ -54,14 +59,12 @@ public class Festival {
     }
 
     /**
-     * devuelve el mes de celebraciÛn del festival, como
+     * devuelve el mes de celebraci√≥n del festival, como
      * valor enumerado
      *
      */
     public Mes getMes() {
-        //TODO
-        
-        return null;
+        return Mes.values()[fechaInicio.getMonthValue() - 1];
         
     }
 
@@ -72,9 +75,7 @@ public class Festival {
      * en un fecha anterior a otro
      */
     public boolean empiezaAntesQue(Festival otro) {
-        //TODO
-        
-        return true;
+        return this.fechaInicio.isBefore(otro.getFechaInicio());
         
     }
 
@@ -85,9 +86,7 @@ public class Festival {
      * en un fecha posteior a otro
      */
     public boolean empiezaDespuesQue(Festival otro) {
-        //TODO
-        
-        return true;
+        return this.fechaInicio.isAfter(otro.getFechaInicio());
         
     }
 
@@ -96,31 +95,54 @@ public class Festival {
      * @return true si el festival ya ha concluido
      */
     public boolean haConcluido() {
-        //TODO
-        
-        return true;
+        return this.fechaInicio.plusDays(duracion).isBefore(LocalDate.now());
 
     }
 
     /**
-     * RepresentaciÛn textual del festival, exactamente
+     * Representaci√≥n textual del festival, exactamente
      * como se indica en el enunciado
      *
      */
     @Override
     public String toString() {
-       //TODO
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("%-30s\t%s\n",
+                this.nombre, this.estilos));
+        sb.append(this.lugar).append("\n");
         
-        return null;
+        LocalDate hoy = LocalDate.now();
+        LocalDate hasta = fechaInicio.plusDays(duracion);
+        if (duracion == 1) {
+            sb.append(fechaInicio.format(DateTimeFormatter.ofPattern("dd " +
+                    "MMM yyyy")));
+        } else {
+            sb.append(fechaInicio.format(DateTimeFormatter.ofPattern("dd " +
+                    "MMM ")) + " - ");
+            sb.append(hasta.format(DateTimeFormatter.ofPattern("dd " + "MMM " +
+                    "yyyy")));
+            
+        }
+        
+        if (hasta.isBefore(hoy)) {
+            sb.append(" (concluido)\n");
+        } else if (fechaInicio.isBefore(hoy)) {
+            sb.append(" (ON)\n");
+        } else {
+            long quedan = ChronoUnit.DAYS.between(hoy, fechaInicio);
+            sb.append(" (quedan " + quedan + " d√≠as)\n");
+        }
+        sb.append(
+                "------------------------------------------------------------");
+        return sb.toString();
         
     }
 
     /**
-     * CÛdigo para probar la clase Festival
+     * C√≥digo para probar la clase Festival
      *
      */
     public static void main(String[] args) {
-        System.out.println("Probando clase Festival");
         String datosFestival = "Gazpatxo Rock : " +
                 "valencia: 28-02-2022  :1  :rock" +
                 ":punk " +
@@ -149,9 +171,9 @@ public class Festival {
         if (f1.empiezaAntesQue(f2)) {
             System.out.println(f1.getNombre() + " empieza antes que " + f2.getNombre());
         } else if (f1.empiezaDespuesQue(f2)) {
-            System.out.println(f1.getNombre() + " empieza despuÈs que " + f2.getNombre());
+            System.out.println(f1.getNombre() + " empieza despu√©s que " + f2.getNombre());
         } else {
-            System.out.println(f1.getNombre() + " empieza el mismo dÌa que " + f2.getNombre());
+            System.out.println(f1.getNombre() + " empieza el mismo d√≠a que " + f2.getNombre());
         }
 
         System.out.println("\nProbando haConcluido()\n");
